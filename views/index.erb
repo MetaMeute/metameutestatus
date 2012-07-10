@@ -23,9 +23,11 @@
     @data.each do |d|
   %>
     <li class="<% if d['door_open'].to_i == 1 %>open<% else %>closed<% end %>">
-    <span class="time"><%= d['timestamp'] %></span>
-    <span class="source"><%= d['source'] %></span>
-    <span class="message"><%= d['message'] %></span>
+    <div class="badge"><%= d['source'] %></div>
+    <div class="message">
+      <span class="time"><%= d['timestamp'] %></span>
+      <%= d['message'] %>
+    </div>
     </li>
   <% end %>
 </ul>

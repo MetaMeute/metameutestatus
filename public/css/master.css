@@ -53,27 +53,27 @@ li {
     margin-top: 0.5em;
     min-height: 2em;
 
-    position: relative;
     border: 3px solid;
     border-radius: 8px;
     background: #fff;
     color: #111;
 
-    overflow: hidden;
+    display: table;
+    width: 100%;
+}
+
+li div {
+  display: table-cell;
 }
 
 li.open { border-color: #696; }
 li.closed { border-color: #966; }
 
-.source {
-    display: block;
-    position: absolute;
-    width: 40px;
+.badge {
+    width: 4em;
     text-align: center;
-    vertical-align: bottom;
-    padding-top: 0.7em;
-    padding-left: 0.15em;
-    padding-right: 0.1em;
+    vertical-align: middle;
+    padding: 0.7em;
     border-right: 1px solid;
     height: 100%;
 
@@ -82,25 +82,19 @@ li.closed { border-color: #966; }
     background-color: grey;
 }
 
-li.open .source { background: #9f9; border-color: #9c9; }
-li.closed .source { background: #f99; border-color: #c99; }
+li.open .badge { background: #9f9; border-color: #9c9; }
+li.closed .badge { background: #f99; border-color: #c99; }
 
 .time {
-    display: block;
-    position: absolute;
-    top: 0.4em;
-    left: 50px;
     vertical-align: bottom;
 
     font-family: monospace;
     font-size: 75%;
     color: #666;
+    display: block;
+    margin-bottom: 0.7em;
 }
 
 .message {
-    display: block;
-
-    margin-left: 50px;
-    margin-top: 1.2em;
-    margin-bottom: 0.3em;
+  padding: 0.5em;
 }
