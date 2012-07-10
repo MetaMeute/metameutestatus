@@ -3,7 +3,6 @@ require 'rubygems'
 require 'sqlite3'
 require 'logger'
 require 'sinatra/base'
-require 'haml'
 
 class StatusApp < Sinatra::Base
 
