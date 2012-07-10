@@ -80,6 +80,8 @@ li.closed { border-color: #966; }
     font-size: 75%;
 
     background-color: grey;
+
+    border-radius: 5px 0 0 5px;
 }
 
 li.open .badge { background: #9f9; border-color: #9c9; }
