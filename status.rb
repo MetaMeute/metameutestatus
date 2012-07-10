@@ -54,7 +54,7 @@ class StatusApp < Sinatra::Base
       door_open = 0
     end
 
-    DB.execute("INSERT INTO status (id, message, source, timestamp, door_open) VALUES (NULL,?,?,datetime('now'), ?)", 
+    DB.execute("INSERT INTO status (id, message, source, timestamp, door_open) VALUES (NULL,?,?,datetime('now', 'localtime'), ?)", 
                params[:message], source, door_open)
     redirect '/'
   end
