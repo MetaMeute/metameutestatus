@@ -31,7 +31,7 @@ header h1 img {
 header h2 {
     border-radius: 0 0 8px 0;
     border-left: 2px solid transparent;
-    padding: 0;
+    padding: 0.5em;
     width: 200px;
     margin: 0.5em auto 1em auto;
 
@@ -49,6 +49,17 @@ header h2.open {
 header h2.closed {
     background: lightpink;
     border-color: #cc9;
+}
+
+h2 .duration {
+    margin: 0.5em;
+}
+
+h2 .duration span {
+    background: #000;
+    color: #fff;
+    padding: 0.3em;
+    border-radius: 0.2em;
 }
 
 #newentryform {

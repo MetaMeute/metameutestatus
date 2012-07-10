@@ -29,7 +29,7 @@ class StatusApp < Sinatra::Base
 
   get '/' do
     @page_title = page_title
-    @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
+    @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 100")
     @door_open = 0
     @duration = nil
 
@@ -42,7 +42,7 @@ class StatusApp < Sinatra::Base
           start = d['timestamp']
           print Time.now()
           print start
-          @duration = Time.diff(Time.now(), start, '%H %N')[:diff]
+          @duration = Time.diff(Time.now(), start, '%h:%m')[:diff]
           break
         end
       end
