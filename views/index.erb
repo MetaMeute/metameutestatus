@@ -1,27 +1,31 @@
 <h1><%= @page_title %></h1>
 
-<h2 style="background: <% if @door_open == "1" %>lightgreen<% else %>lightpink<% end %>">
-  Der Keller ist
-  <% if @door_open == "1" %>
+<h2 class="<% if @door_open.to_i == 1 %>open<% else %>closed<% end %>">
+  Der Keller ist <span class="door-state">
+  <% if @door_open.to_i == 1 %>
     offen
   <% else %>
     geschlossen
   <% end %>
+  </span>
 </h2>
 
-<form method="post" name="form">
-  <input name="source" size="15" value="web" hidden />
-  <input name="message" size="140" />
-  <button type="submit">Send</button>
-</form>
+<div id="newentryform">
+  <form method="post" name="form">
+    <input name="source" size="15" value="web" hidden />
+    <input name="message" size="140" />
+    <button type="submit">Send</button>
+  </form>
+</div>
 
 <ul>
-  <% @data.each do |d| %>
-    <li style="background: <% if d['door_open'] == "1" %>lightgreen<% else %>lightpink<% end %>">
-    <strong><%= d['timestamp'] %></strong>
-    <%= d['source'] %>:
-    <%= d['message'] %>
+  <%
+    @data.each do |d|
+  %>
+    <li class="<% if d['door_open'].to_i == 1 %>open<% else %>closed<% end %>">
+    <span class="time"><%= d['timestamp'] %></span>
+    <span class="source"><%= d['source'] %></span>
+    <span class="message"><%= d['message'] %></span>
     </li>
   <% end %>
 </ul>
-
