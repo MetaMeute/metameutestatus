@@ -1,23 +1,39 @@
 body {
     font-family: sans-serif;
 
-    background: #999;
-}
+    background: #999 url(bright_squares.png);
 
-h1 {
+    margin: 0;
     padding: 0;
-    width: 700px;
-    margin: 1.5em auto 0 auto;
-
-    text-align: center;
 }
 
-h2 {
+header {
+  background: #fff;
+  width: 700px;
+  margin: 0 auto;
+
+  display: table;
+
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, .7);
+}
+
+header h1 {
+    padding: .5em;
+    margin: 0;
+    width: 700px;
+    display: table-cell;
+}
+
+header h2 {
     padding: 0;
     width: 700px;
     margin: 0.5em auto 1em auto;
 
     text-align: center;
+
+    display: table-cell;
+    vertical-align: middle;
 }
 
 #newentryform {
@@ -30,6 +46,24 @@ h2 {
 
 #newentryform input {
     width: 400px;
+    height: 28px;
+    padding: 0 0.5em;
+    border-radius: 10px 0 0 10px;
+    border-style: solid;
+    border-width: 2px 0 2px 2px;
+    border-color: #aaa;
+
+}
+
+#newentryform button {
+    border-radius: 0 10px 10px 0;
+    border-style: solid;
+    border-width: 2px 2px 2px 0;
+    border-color: #aaa;
+    margin: 0;
+    vertical-align: top;
+    margin-left: -1px;
+    height: 32px;
 }
 
 h2.open .door-state {
@@ -90,7 +124,6 @@ li.closed .badge { background: #f99; border-color: #c99; }
 .time {
     vertical-align: bottom;
 
-    font-family: monospace;
     font-size: 75%;
     color: #666;
     display: block;
@@ -99,4 +132,17 @@ li.closed .badge { background: #f99; border-color: #c99; }
 
 .message {
   padding: 0.5em;
+}
+
+footer {
+  width: 700px;
+  padding-top: 2em;
+  margin: 0 auto;
+  text-align: right;
+  color: #888;
+}
+
+a {
+  text-decoration: none;
+  color: #339;
 }
