@@ -1,0 +1,2 @@
+require 'status'
+run StatusApp
