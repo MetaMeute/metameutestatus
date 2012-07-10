@@ -149,6 +149,7 @@ li.closed { background: lightpink }
     color: #aaa;
     float: right;
     font-size: 0.7em;
+    margin-top: 0.25em;
 }
 
 .message {
