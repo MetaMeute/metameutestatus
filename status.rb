@@ -3,6 +3,7 @@ require 'rubygems'
 require 'sqlite3'
 require 'logger'
 require 'sinatra/base'
+require 'time_diff'
 
 class StatusApp < Sinatra::Base
 
@@ -20,7 +21,7 @@ class StatusApp < Sinatra::Base
     end
   end
 
-  configure do 
+  configure do
     LOGGER = Logger.new('sinatra.log')
     DB = SQLite3::Database.new("status.db")
     DB.results_as_hash = true
@@ -29,12 +30,15 @@ class StatusApp < Sinatra::Base
   get '/' do
     @page_title = page_title
     @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
-    @door_open = 0 
+    @door_open = 0
+    @duration = nil
     begin
       @door_open = @data[0]['door_open']
+      @duration = Time.diff(Time.now(), @data[0]['timestamp'], '%H %N')[:diff]
     rescue
-      @door_open = 0 
+      @door_open = 0
     end
+
     erb :index
   end
 
@@ -48,13 +52,13 @@ class StatusApp < Sinatra::Base
       door_open = params[:door_open]
 
       if door_open.nil? then
-        door_open = @data[0]['door_open'] 
+        door_open = @data[0]['door_open']
       end
     rescue
       door_open = 0
     end
 
-    DB.execute("INSERT INTO status (id, message, source, timestamp, door_open) VALUES (NULL,?,?,datetime('now', 'localtime'), ?)", 
+    DB.execute("INSERT INTO status (id, message, source, timestamp, door_open) VALUES (NULL,?,?,datetime('now', 'localtime'), ?)",
                params[:message], source, door_open)
     redirect '/'
   end
