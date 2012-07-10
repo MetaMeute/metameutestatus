@@ -5,7 +5,7 @@
   <title><%= @page_title %></title>
   <link rel="stylesheet" href="/css/master.css" type="text/css" media="screen" />
 </head>
-<body onLoad="document.form.message.focus()">
+<body onLoad="document.getElementById('messageInput').focus()">
   <%= yield %>
 </body>
 </html>
