@@ -152,6 +152,10 @@ li.closed { background: lightpink }
     height: 100%;
 
     font-size: 75%;
+
+    max-width: 4em;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .time {
