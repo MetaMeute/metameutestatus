@@ -32,9 +32,24 @@ class StatusApp < Sinatra::Base
     @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
     @door_open = 0
     @duration = nil
+
+    dataS = Array.new @data
+    dataS.unshift nil
+
+    (dataS.zip @data).each do |d, dPrev|
+      if d != nil and dPrev != nil
+        if d['door_open'] != dPrev['door_open']
+          start = d['timestamp']
+          print Time.now()
+          print start
+          @duration = Time.diff(Time.now(), start, '%H %N')[:diff]
+          break
+        end
+      end
+    end
+
     begin
       @door_open = @data[0]['door_open']
-      @duration = Time.diff(Time.now(), @data[0]['timestamp'], '%H %N')[:diff]
     rescue
       @door_open = 0
     end
@@ -58,7 +73,7 @@ class StatusApp < Sinatra::Base
       door_open = 0
     end
 
-    DB.execute("INSERT INTO status (id, message, source, timestamp, door_open) VALUES (NULL,?,?,datetime('now', 'localtime'), ?)",
+    DB.execute("INSERT INTO status (id, message, source, timestamp, door_open) VALUES (NULL,?,?,datetime('now'), ?)",
                params[:message], source, door_open)
     redirect '/'
   end

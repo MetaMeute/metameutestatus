@@ -35,7 +35,7 @@
     <li class="<% if d['door_open'].to_i == 1 %>open<% else %>closed<% end %><% if dPrev != nil %> <% if dPrev['door_open'].to_i == 1 %>was_open<% else %>was_closed<% end end %>">
     <div class="badge"><%= d['source'] %></div>
     <div class="message">
-      <span class="time"><%= d['timestamp'] %></span>
+      <span class="time"><%= Time.parse(d['timestamp'] + "UTC").localtime.strftime("%Y-%m-%d %H:%M") %></span>
       <%= d['message'] %>
     </div>
     </li>
