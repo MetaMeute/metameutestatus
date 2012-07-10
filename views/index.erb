@@ -27,16 +27,19 @@
 
 <ul>
   <%
-    @data.each do |d|
+    dataS = Array.new @data
+    @data.unshift nil
+
+    (@data.zip dataS).each do |d, dPrev| if d != nil
   %>
-    <li class="<% if d['door_open'].to_i == 1 %>open<% else %>closed<% end %>">
+    <li class="<% if d['door_open'].to_i == 1 %>open<% else %>closed<% end %><% if dPrev != nil %> <% if dPrev['door_open'].to_i == 1 %>was_open<% else %>was_closed<% end end %>">
     <div class="badge"><%= d['source'] %></div>
     <div class="message">
       <span class="time"><%= d['timestamp'] %></span>
       <%= d['message'] %>
     </div>
     </li>
-  <% end %>
+  <% end end %>
 </ul>
 
 <footer>
