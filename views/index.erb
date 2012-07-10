@@ -1,8 +1,8 @@
 <h1><%= @page_title %></h1>
 
-<h2 style="background: <% if @door_open == 1 %>lightgreen<% else %>lightpink<% end %>">
+<h2 style="background: <% if @door_open == "1" %>lightgreen<% else %>lightpink<% end %>">
   Der Keller ist
-  <% if @door_open == 1 %>
+  <% if @door_open == "1" %>
     offen
   <% else %>
     geschlossen
@@ -10,13 +10,14 @@
 </h2>
 
 <form method="post" name="form">
+  <input name="source" size="15" value="web" hidden />
   <input name="message" size="140" />
   <button type="submit">Send</button>
 </form>
 
 <ul>
   <% @data.each do |d| %>
-    <li style="background: <% if d['door_open'] == 1 %>lightgreen<% else %>lightpink<% end %>">
+    <li style="background: <% if d['door_open'] == "1" %>lightgreen<% else %>lightpink<% end %>">
     <strong><%= d['timestamp'] %></strong>
     <%= d['source'] %>:
     <%= d['message'] %>
