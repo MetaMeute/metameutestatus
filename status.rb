@@ -3,6 +3,7 @@ require 'rubygems'
 require 'sqlite3'
 require 'logger'
 require 'sinatra/base'
+require 'haml'
 
 class StatusApp < Sinatra::Base
 
@@ -59,4 +60,14 @@ class StatusApp < Sinatra::Base
     redirect '/'
   end
 
+  get '/rss' do
+    @page_title = page_title
+    @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
+
+    builder :rss
+  end
+
+
+  # start the server if ruby file executed directly
+  run! if app_file == $0
 end
