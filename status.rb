@@ -1,7 +1,6 @@
 # contents of app.rb
 require 'rubygems'
 require 'sqlite3'
-require 'logger'
 require 'sinatra/base'
 require 'time_diff'
 
@@ -22,7 +21,6 @@ class StatusApp < Sinatra::Base
   end
 
   configure do
-    LOGGER = Logger.new('sinatra.log')
     DB = SQLite3::Database.new("status.db")
     DB.results_as_hash = true
   end
