@@ -99,54 +99,70 @@ li {
     list-style: none;
     text-indent: 0px;
 
-    margin-top: 0.5em;
     min-height: 2em;
 
-    border: 3px solid;
-    border-radius: 8px;
-    background: #fff;
     color: #111;
 
     display: table;
     width: 100%;
+
+    border-radius: 12px;
+    border: 3px solid rgba(0, 0, 0, 0.2);
 }
 
 li div {
   display: table-cell;
 }
 
-li.open { border-color: #696; }
-li.closed { border-color: #966; }
+li.open.was_closed, li.closed.was_open {
+  margin-bottom: 1em;
+}
+
+li.open.was_open, li.closed.was_closed {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+li.open.was_open + li.open, li.closed.was_closed + li.closed {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-top: none;
+}
+
+li.open { background: lightgreen }
+li.closed { background: lightpink }
 
 .badge {
     width: 4em;
     text-align: center;
     vertical-align: middle;
     padding: 0.7em;
-    border-right: 1px solid;
     height: 100%;
 
     font-size: 75%;
-
-    background-color: grey;
-
-    border-radius: 5px 0 0 5px;
 }
-
-li.open .badge { background: #9f9; border-color: #9c9; }
-li.closed .badge { background: #f99; border-color: #c99; }
 
 .time {
     vertical-align: bottom;
 
-    font-size: 75%;
-    color: #666;
-    display: block;
-    margin-bottom: 0.7em;
+    color: #aaa;
+    float: right;
+    font-size: 0.7em;
 }
 
 .message {
   padding: 0.5em;
+  background: #fff;
+  border-radius: 0 9px 9px 0;
+}
+
+li.open.was_open .message , li.closed.was_closed .message {
+  border-bottom-right-radius: 0;
+}
+
+li.open.was_open + li.open .message, li.closed.was_closed + li.closed .message {
+  border-top-right-radius: 0;
 }
 
 footer {
