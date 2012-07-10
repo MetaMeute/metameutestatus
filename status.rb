@@ -60,5 +60,3 @@ class StatusApp < Sinatra::Base
   end
 
 end
-
-StatusApp.run!
