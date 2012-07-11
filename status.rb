@@ -3,6 +3,7 @@ require 'rubygems'
 require 'sqlite3'
 require 'sinatra/base'
 require 'time_diff'
+require 'builder'
 
 class StatusApp < Sinatra::Base
 
