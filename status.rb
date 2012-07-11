@@ -1,9 +1,10 @@
-# contents of app.rb
+# encoding: UTF-8
 require 'rubygems'
 require 'sqlite3'
 require 'sinatra/base'
 require 'time_diff'
 require 'builder'
+require 'json'
 
 class StatusApp < Sinatra::Base
 
@@ -39,8 +40,6 @@ class StatusApp < Sinatra::Base
       if d != nil and dPrev != nil
         if d['door_open'] != dPrev['door_open']
           start = d['timestamp']
-          print Time.now()
-          print start
           @duration = Time.diff(Time.now(), start, '%h:%m')[:diff]
           break
         end
@@ -84,6 +83,62 @@ class StatusApp < Sinatra::Base
     builder :rss
   end
 
+  get '/spaceapi.json' do
+    @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 100")
+    @open = false 
+    @lastchange = nil
+
+    dataS = Array.new @data
+    dataS.unshift nil
+
+    (dataS.zip @data).each do |d, dPrev|
+      if d != nil and dPrev != nil
+        if d['door_open'] != dPrev['door_open']
+          start = d['timestamp']
+          @lastchange = Time.parse(start + " UTC").to_i
+          break
+        end
+      end
+    end
+
+    begin
+      @open = @data[0]['door_open'].to_i == 1
+    rescue
+      @open = false
+    end
+
+    json = {
+        :api => "0.12",
+        :space => "MetaMeute",
+        :url => "https://metameute.de",
+        :icon => {
+          :open => "https://status.metameute.de/images/open.png",
+          :closed => "https://status.metameute.de/images/closed.png"
+        },
+        :address => "Unversität zu Lübeck, Gebäude 62, Ratzeburger Allee 160, 23562 Lübeck, Germany",
+        :contact => {
+          :phone => "+494515005011",
+          :ml => "MetaMeute@asta.uni-luebeck.de",
+          :irc => "irc://irc.oftc.net/#Metameute"
+        },
+        :logo => "https://status.metameute.de/images/meutelogo.png",
+        :feeds => [
+          {:name => "blog",
+           :type => "application/rss+xml",
+           :url => "http://blog.metameute.de/feed/"
+          },
+          {:name => "status",
+           :type => "application/rss+xml",
+           :url => "http://status.metameute.de/rss"
+          }
+        ],
+        :lat => 10.702268,
+        :lon => 53.834372,
+        :open => @open,
+        :lastchange => @lastchange
+      }
+    json.to_json.gsub!(/\\u([0-9a-z]{4})/) {|s| [$1.to_i(16)].pack("U")}
+  end
 
   # start the server if ruby file executed directly
   run! if app_file == $0
