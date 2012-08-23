@@ -5,6 +5,7 @@ require 'sinatra/base'
 require 'time_diff'
 require 'builder'
 require 'json'
+require 'sinatra/jsonp'
 
 class StatusApp < Sinatra::Base
 
@@ -137,7 +138,7 @@ class StatusApp < Sinatra::Base
         :open => @open,
         :lastchange => @lastchange
       }
-    json.to_json.gsub!(/\\u([0-9a-z]{4})/) {|s| [$1.to_i(16)].pack("U")}
+    jsonp json
   end
 
   # start the server if ruby file executed directly
