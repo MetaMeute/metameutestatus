@@ -8,6 +8,7 @@ require 'json'
 require 'sinatra/jsonp'
 
 class StatusApp < Sinatra::Base
+  helpers Sinatra::Jsonp
 
   helpers do
     def page_title
