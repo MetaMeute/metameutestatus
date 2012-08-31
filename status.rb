@@ -58,6 +58,10 @@ class StatusApp < Sinatra::Base
   end
 
   post '/' do
+    message = params[:message]
+    if message.nil? || message.strip!.length == 0 then
+      redirect '/'
+    end
     source = params[:source]
     @data = DB.execute("SELECT door_open FROM status ORDER BY timestamp DESC LIMIT 1")
 
@@ -74,7 +78,7 @@ class StatusApp < Sinatra::Base
     end
 
     DB.execute("INSERT INTO status (id, message, source, timestamp, door_open) VALUES (NULL,?,?,datetime('now'), ?)",
-               params[:message], source, door_open)
+               message, source, door_open)
     redirect '/'
   end
 
