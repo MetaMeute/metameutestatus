@@ -59,7 +59,7 @@ class StatusApp < Sinatra::Base
 
   post '/' do
     message = params[:message]
-    if message.nil? || message.strip!.length == 0 then
+    if message.nil? || message.strip.length == 0 then
       redirect '/'
     end
     source = params[:source]
