@@ -62,6 +62,7 @@ class StatusApp < Sinatra::Base
     if message.nil? || message.strip.length == 0 then
       redirect '/'
     end
+    message.strip!
     source = params[:source]
     @data = DB.execute("SELECT door_open FROM status ORDER BY timestamp DESC LIMIT 1")
 
