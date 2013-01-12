@@ -139,8 +139,8 @@ class StatusApp < Sinatra::Base
            :url => "http://status.metameute.de/rss"
           }
         ],
-        :lat => 10.702268,
-        :lon => 53.834372,
+        :lat => 53.834372,
+        :lon => 10.702268,
         :open => @open,
         :lastchange => @lastchange
       }
