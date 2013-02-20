@@ -90,6 +90,13 @@ class StatusApp < Sinatra::Base
     builder :rss
   end
 
+  get '/json' do
+    @page_title = page_title
+    @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
+
+    @data.to_json
+  end
+
   get '/spaceapi.json' do
     @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 100")
     @open = false 
