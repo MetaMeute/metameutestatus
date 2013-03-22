@@ -22,6 +22,10 @@ class StatusApp < Sinatra::Base
     def keller_zu
       ['geschlossen', 'zu']
     end
+    
+    def h(text)
+      Rack::Utils.escape_html(text)
+    end
   end
 
   configure do
