@@ -5,6 +5,7 @@ require 'sinatra/base'
 require 'time_diff'
 require 'builder'
 require 'json'
+require 'cgi'
 require 'sinatra/jsonp'
 
 class StatusApp < Sinatra::Base
@@ -58,18 +59,18 @@ class StatusApp < Sinatra::Base
   end
 
   post '/' do
-    message = params[:message]
+    message = CGI.escape_html(params[:message])
     if message.nil? || message.strip.length == 0 then
       redirect '/'
     end
     message.strip!
-    source = params[:source]
+    source = CGI.escape_html(params[:source])
     @data = DB.execute("SELECT door_open FROM status ORDER BY timestamp DESC LIMIT 1")
 
     door_open = 0
 
     begin
-      door_open = params[:door_open]
+      door_open = CGI.escape_html(params[:door_open])
 
       if door_open.nil? then
         door_open = @data[0]['door_open']
