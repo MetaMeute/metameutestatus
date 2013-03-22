@@ -1,2 +1,2 @@
-require 'status'
+require './status'
 run StatusApp
