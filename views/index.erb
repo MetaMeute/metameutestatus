@@ -36,7 +36,7 @@
     <div class="badge"><%= d['source'] %></div>
     <div class="message">
       <span class="time"><%= Time.parse(d['timestamp'] + "UTC").localtime.strftime("%Y-%m-%d %H:%M") %></span>
-      <%= d['message'] %>
+      <%= h d['message'] %>
     </div>
     </li>
   <% end end %>
