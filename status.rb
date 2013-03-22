@@ -98,6 +98,7 @@ class StatusApp < Sinatra::Base
     @page_title = page_title
     @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
 
+    content_type 'application/json'
     @data.to_json
   end
 
@@ -155,6 +156,8 @@ class StatusApp < Sinatra::Base
         :open => @open,
         :lastchange => @lastchange
       }
+
+    content_type 'application/json'
     jsonp json
   end
 
