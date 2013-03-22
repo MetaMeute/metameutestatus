@@ -22,7 +22,7 @@ class StatusApp < Sinatra::Base
     def keller_zu
       ['geschlossen', 'zu']
     end
-    
+
     def h(text)
       Rack::Utils.escape_html(text)
     end
@@ -103,7 +103,7 @@ class StatusApp < Sinatra::Base
 
   get '/spaceapi.json' do
     @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 100")
-    @open = false 
+    @open = false
     @lastchange = nil
 
     dataS = Array.new @data
