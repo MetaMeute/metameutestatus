@@ -80,7 +80,7 @@ class StatusApp < Sinatra::Base
   post '/paul' do
     door_open = params[:door_open]
 
-    if door_open == 1 then
+    if door_open.to_i == 1 then
        message = 'Keller offen'
     else
        message = 'Keller zu'
