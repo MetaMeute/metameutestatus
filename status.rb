@@ -30,15 +30,31 @@ class StatusApp < Sinatra::Base
 
   get '/' do
     @page_title = config["title"]
-    data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 100")
-    @messages = DB.execute("SELECT * FROM messages ORDER BY timestamp DESC LIMIT 100")
     @door_open = 0
     @duration = nil
 
-    dataS = Array.new data
-    dataS.unshift nil
+    status = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
+    messages = DB.execute("SELECT * FROM messages ORDER BY timestamp DESC LIMIT 10")
 
-    (dataS.zip data).each do |d, dPrev|
+    @data = messages.concat(status)
+    @data.sort_by! { |k| k["timestamp"] }
+
+    state = nil
+
+    @data.each do |d|
+      if d.has_key? "door_open"
+        state = d["door_open"]
+      else
+        d["door_open"] = state
+      end
+    end
+    
+    @data.reverse!
+
+    statusS = Array.new status
+    statusS.unshift nil
+
+    (statusS.zip status).each do |d, dPrev|
       if d != nil and dPrev != nil
         if d['door_open'] != dPrev['door_open']
           start = d['timestamp']

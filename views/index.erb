@@ -27,13 +27,21 @@
 
 <ul>
   <%
-    @messages.each do |d|
+    @data.each do |d|
   %>
-    <li>
-    <div class="message">
+    <% if d.has_key? "message" %>
+    <li class="message <% if d['door_open'].to_i == 1 %>open<% else %>closed<% end %>">
       <span class="time"><%= Time.parse(d['timestamp'] + "UTC").localtime.strftime("%Y-%m-%d %H:%M") %></span>
       <%= h d['message'] %>
-    </div>
+    <% else %>
+    <li class="status <% if d['door_open'].to_i == 1 %>open<% else %>closed<% end %>">
+      <% if d['door_open'].to_i == 1 %>
+        offen
+      <% else %>
+        geschlossen
+      <% end %>
+      <span class="time"><%= Time.parse(d['timestamp'] + "UTC").localtime.strftime("%Y-%m-%d %H:%M") %></span>
+    <% end %>
     </li>
   <% end %>
 </ul>

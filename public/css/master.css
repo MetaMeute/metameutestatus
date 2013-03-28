@@ -108,36 +108,87 @@ li {
     list-style: none;
     text-indent: 0px;
 
-    min-height: 2em;
-
     color: #111;
-
-    display: table;
-    width: 100%;
-
-    border-radius: 12px;
-    border: 3px solid rgba(0, 0, 0, 0.2);
-    margin-bottom: 0.5em;
 }
 
-li div {
-  display: table-cell;
+li.status.open {
+  background: lightgreen;
+}
+
+li.status.closed {
+  background: lightpink;
+}
+
+li.status {
+  text-align: center;
+  font-weight: bold;
+
+  font-size: 1em;
+  margin: 0 auto;
+  padding: 0.5em 0;
+
+  background: #fff;
+
+  color: rgba(0, 0, 0, 0.5);
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
 }
 
 .time {
-    vertical-align: bottom;
+  float: right;
+  font-size: 0.7em;
+  margin-top: 0.25em;
+  padding-right: 0.5em;
+  color: rgba(0, 0, 0, 0.3);
+}
 
-    color: #aaa;
-    float: right;
-    font-size: 0.7em;
-    margin-top: 0.25em;
+li.status .time {
+  display: block;
+  float: none;
+  font-size: 0.8em;
 }
 
 .message {
   padding: 0.5em;
-  background: #fff;
-  border-radius: 9px 9px;
+  background: rgba(255, 255, 255, 0.8);
+  border-width: 4pt 4pt 0;
+  border-style: solid;
+
+  color: #555;
+
+  box-shadow: inset 0pt -0.5pt 0.5em rgba(0, 0, 0, 0.2);
+
+  -webkit-transition: background 0.5s;
 }
+
+.message:hover {
+  background: lightyellow;
+}
+
+ul li:first-child {
+  border-top-left-radius: 1em;
+  border-top-right-radius: 1em;
+}
+
+.message + .message {
+  border-top: 1pt solid rgba(0, 0, 0, 0.1);
+}
+
+.message.open {
+  border-color: lightgreen;
+}
+
+.message.closed {
+  border-color: lightpink;
+}
+
+.status + .status,
+.status + .message {
+  margin-top: 2em;
+  border-top-left-radius: 1em;
+  border-top-right-radius: 1em;
+}
+
 
 footer {
   width: 700px;
@@ -151,3 +202,4 @@ a {
   text-decoration: none;
   color: #339;
 }
+
