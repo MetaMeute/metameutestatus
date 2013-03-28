@@ -126,36 +126,9 @@ class StatusApp < Sinatra::Base
       @open = false
     end
 
-    json = {
-        :api => "0.12",
-        :space => "MetaMeute",
-        :url => "https://metameute.de",
-        :icon => {
-          :open => "https://status.metameute.de/images/open.png",
-          :closed => "https://status.metameute.de/images/closed.png"
-        },
-        :address => "Unversität zu Lübeck, Gebäude 62, Ratzeburger Allee 160, 23562 Lübeck, Germany",
-        :contact => {
-          :phone => "+494515005011",
-          :ml => "MetaMeute@asta.uni-luebeck.de",
-          :irc => "irc://irc.oftc.net/#Metameute"
-        },
-        :logo => "https://status.metameute.de/images/meutelogo.png",
-        :feeds => [
-          {:name => "blog",
-           :type => "application/rss+xml",
-           :url => "http://blog.metameute.de/feed/"
-          },
-          {:name => "status",
-           :type => "application/rss+xml",
-           :url => "http://status.metameute.de/rss"
-          }
-        ],
-        :lat => 53.834372,
-        :lon => 10.702268,
-        :open => @open,
-        :lastchange => @lastchange
-      }
+    json = YAML.load_file('status.yml')
+    json[:open] = @open
+    json[:lastchange] = @lastchange
 
     content_type 'application/json'
     jsonp json
