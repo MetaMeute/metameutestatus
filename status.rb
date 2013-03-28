@@ -49,7 +49,7 @@ class StatusApp < Sinatra::Base
     end
 
     begin
-      @door_open = @data[0]['door_open']
+      @door_open = data[0]['door_open']
     rescue
       @door_open = 0
     end
