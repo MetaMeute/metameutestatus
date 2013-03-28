@@ -117,43 +117,11 @@ li {
 
     border-radius: 12px;
     border: 3px solid rgba(0, 0, 0, 0.2);
+    margin-bottom: 0.5em;
 }
 
 li div {
   display: table-cell;
-}
-
-li.open.was_closed, li.closed.was_open {
-  margin-bottom: 1em;
-}
-
-li.open.was_open, li.closed.was_closed {
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-li.open.was_open + li.open, li.closed.was_closed + li.closed {
-  border-top-left-radius: 0px;
-  border-top-right-radius: 0px;
-  border-top: none;
-}
-
-li.open { background: lightgreen }
-li.closed { background: lightpink }
-
-.badge {
-    width: 4em;
-    text-align: center;
-    vertical-align: middle;
-    padding: 0.7em;
-    height: 100%;
-
-    font-size: 75%;
-
-    max-width: 4em;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .time {
@@ -168,15 +136,7 @@ li.closed { background: lightpink }
 .message {
   padding: 0.5em;
   background: #fff;
-  border-radius: 0 9px 9px 0;
-}
-
-li.open.was_open .message , li.closed.was_closed .message {
-  border-bottom-right-radius: 0;
-}
-
-li.open.was_open + li.open .message, li.closed.was_closed + li.closed .message {
-  border-top-right-radius: 0;
+  border-radius: 9px 9px;
 }
 
 footer {
