@@ -63,28 +63,31 @@ class StatusApp < Sinatra::Base
 
   post '/' do
     message = params[:message]
+    
+    @data = DB.execute("SELECT door_open FROM status ORDER BY timestamp DESC LIMIT 1")
+    door_open = @data[0]['door_open']
+
     if message.nil? || message.strip.length == 0 then
       redirect '/'
     end
     message.strip!
-    source = params[:source]
-    @data = DB.execute("SELECT door_open FROM status ORDER BY timestamp DESC LIMIT 1")
 
-    door_open = 0
-
-    begin
-      door_open = params[:door_open]
-
-      if door_open.nil? then
-        door_open = @data[0]['door_open']
-      end
-    rescue
-      door_open = 0
-    end
-
-    DB.execute("INSERT INTO status (id, message, source, timestamp, door_open) VALUES (NULL,?,?,datetime('now'), ?)",
-               message, source, door_open)
+    DB.execute("INSERT INTO status (id, message, source, timestamp, door_open) VALUES (NULL,?,'web',datetime('now'),?)",
+               message, door_open)
     redirect '/'
+  end
+
+  post '/paul' do
+    door_open = params[:door_open]
+
+    if door_open == 1 then
+       message = 'Keller offen'
+    else
+       message = 'Keller zu'
+    end
+   
+    DB.execute("INSERT INTO status (id, message, source, timestamp, door_open) VALUES (NULL,?,'paul',datetime('now'), ?)",
+               message, door_open)
   end
 
   get '/rss' do
