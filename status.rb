@@ -81,7 +81,11 @@ class StatusApp < Sinatra::Base
 
   get '/rss' do
     @page_title = config["title"]
-    @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
+    status = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
+    messages = DB.execute("SELECT * FROM messages ORDER BY timestamp DESC LIMIT 10")
+
+    @data = messages.concat(status)
+    @data.sort_by! { |k| k["timestamp"] }.reverse!
 
     builder :rss
   end
