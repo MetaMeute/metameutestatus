@@ -6,23 +6,14 @@ require 'time_diff'
 require 'builder'
 require 'json'
 require 'sinatra/jsonp'
+require 'yaml'
 
 class StatusApp < Sinatra::Base
   helpers Sinatra::Jsonp
 
+  config = YAML.load_file('config.yml')
+
   helpers do
-    def page_title
-      'MetaMeuteStatus'
-    end
-
-    def keller_offen
-      ['offen', 'auf']
-    end
-
-    def keller_zu
-      ['geschlossen', 'zu']
-    end
-
     def h(text)
       Rack::Utils.escape_html(text)
     end
@@ -33,16 +24,21 @@ class StatusApp < Sinatra::Base
     DB.results_as_hash = true
   end
 
+  get '' do
+    redirect url('/')
+  end
+
   get '/' do
-    @page_title = page_title
-    @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 100")
+    @page_title = config["title"]
+    data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 100")
+    @messages = DB.execute("SELECT * FROM messages ORDER BY timestamp DESC LIMIT 100")
     @door_open = 0
     @duration = nil
 
-    dataS = Array.new @data
+    dataS = Array.new data
     dataS.unshift nil
 
-    (dataS.zip @data).each do |d, dPrev|
+    (dataS.zip data).each do |d, dPrev|
       if d != nil and dPrev != nil
         if d['door_open'] != dPrev['door_open']
           start = d['timestamp']
@@ -67,43 +63,39 @@ class StatusApp < Sinatra::Base
       redirect '/'
     end
     message.strip!
-    source = params[:source]
-    @data = DB.execute("SELECT door_open FROM status ORDER BY timestamp DESC LIMIT 1")
 
-    door_open = 0
+    DB.execute("INSERT INTO messages (id, timestamp, message) VALUES (NULL,datetime('now'), ?)", message)
+    redirect url('/')
+  end
 
-    begin
-      door_open = params[:door_open]
+  post '/door' do
+    door_open = params[:door_open]
 
-      if door_open.nil? then
-        door_open = @data[0]['door_open']
-      end
-    rescue
-      door_open = 0
+    if door_open.nil? then
+      halt 400
     end
 
-    DB.execute("INSERT INTO status (id, message, source, timestamp, door_open) VALUES (NULL,?,?,datetime('now'), ?)",
-               message, source, door_open)
-    redirect '/'
+    DB.execute("INSERT INTO status (id, timestamp, door_open) VALUES (NULL,datetime('now'), ?)", door_open)
+    redirect url('/')
   end
 
   get '/rss' do
-    @page_title = page_title
+    @page_title = config["title"]
     @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
 
     builder :rss
   end
 
   get '/json' do
-    @page_title = page_title
-    @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
+    @status = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
+    @messages = DB.execute("SELECT * FROM messages ORDER BY timestamp DESC LIMIT 10")
 
     content_type 'application/json'
-    @data.to_json
+    { :status => @status, :messages => @messages }.to_json
   end
 
   get '/spaceapi.json' do
-    @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 100")
+    @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
     @open = false
     @lastchange = nil
 

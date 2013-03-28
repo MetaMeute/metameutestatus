@@ -1,4 +1,5 @@
 # Database
     
-    CREATE TABLE status (id integer primary key, message varchar(149), source varchar(19), timestamp datetime, door_open integer);
+    CREATE TABLE status (id integer primary key, timestamp datetime, door_open integer);
+    CREATE TABLE messages (id integer primary key, timestamp datetime, message text);
 
