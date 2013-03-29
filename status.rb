@@ -115,6 +115,9 @@ class StatusApp < Sinatra::Base
   end
 
   get '/spaceapi.json' do
+    headers['Cache-Control']  = "no-cache"
+    headers['Access-Control-Allow-Origin'] = "*"
+
     @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
     @open = false
     @lastchange = nil
