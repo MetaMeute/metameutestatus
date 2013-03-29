@@ -9,7 +9,7 @@ contact:
   phone: +494515005011
   ml: MetaMeute@asta.uni-luebeck.de
   irc: irc://irc.oftc.net/#Metameute
-logo: https://status.metameute.de/images/meutelogo.png
+logo: https://status.metameute.de/images/logo.png
 feeds:
   - name: blog
     type: application/rss+xml
