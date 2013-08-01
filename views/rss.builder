@@ -13,7 +13,11 @@ xml.rss :version => "2.0" do
           xml.title d['message']
         end
         xml.link "#{request.url.chomp request.path_info}"
-        xml.guid "#{request.url.chomp request.path_info}/#{d['id']}"
+        if d.has_key? 'door_open'
+          xml.guid "status#{d['id']}"
+        else
+          xml.guid "message#{d['id']}"
+        end
         xml.pubDate Time.parse(d['timestamp'].to_s + "UTC").rfc822
       end
     end
