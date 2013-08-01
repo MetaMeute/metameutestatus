@@ -12,10 +12,10 @@ xml.rss :version => "2.0" do
         else
           xml.title d['message']
         end
-        xml.link "#{request.url.chomp request.path_info}"  
-        xml.guid "#{request.url.chomp request.path_info}/#{d['id']}"  
+        xml.link "#{request.url.chomp request.path_info}"
+        xml.guid "#{request.url.chomp request.path_info}/#{d['id']}"
         xml.pubDate Time.parse(d['timestamp'].to_s + "UTC").rfc822
-      end  
-    end  
-  end  
-end  
+      end
+    end
+  end
+end
