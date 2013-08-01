@@ -17,6 +17,31 @@ class StatusApp < Sinatra::Base
     def h(text)
       Rack::Utils.escape_html(text)
     end
+    def getstatus
+      # Alle status der letzten Woche
+      since = Time.now.getutc - 60*60*24*7
+      status = DB.execute("SELECT * FROM status WHERE timestamp > ? ORDER BY timestamp DESC LIMIT 20", since.to_s)
+      if status.length == 0
+          status = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 2")
+      end
+      return status
+    end
+    def getmessages(status)
+      # und nur Messages, die zu den gefundenen Status passen
+      messages = DB.execute("SELECT * FROM messages WHERE timestamp > ? ORDER BY timestamp LIMIT 20", status[-1]["timestamp"])
+      return messages
+    end
+    def getdata(status, messages)
+      if !status
+        status = getstatus()
+      end
+      if !messages
+        messages = getmessages(status)
+      end
+      @data = messages.concat(status)
+      @data.sort_by! { |k| k["timestamp"] }
+      return @data
+    end
   end
 
   configure do
@@ -33,11 +58,9 @@ class StatusApp < Sinatra::Base
     @door_open = 0
     @duration = nil
 
-    status = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
-    messages = DB.execute("SELECT * FROM messages ORDER BY timestamp DESC LIMIT 10")
-
-    @data = messages.concat(status)
-    @data.sort_by! { |k| k["timestamp"] }
+    status = getstatus()
+    messages = getmessages(status)
+    @data = getdata(status, messages)
 
     state = nil
 
@@ -48,7 +71,7 @@ class StatusApp < Sinatra::Base
         d["door_open"] = state
       end
     end
-    
+
     @data.reverse!
 
     statusS = Array.new status
@@ -57,7 +80,7 @@ class StatusApp < Sinatra::Base
     (statusS.zip status).each do |d, dPrev|
       if d != nil and dPrev != nil
         if d['door_open'] != dPrev['door_open']
-          start = d['timestamp']
+          start = d['timestamp'] + " UTC"
           @duration = Time.diff(Time.now(), start, '%h:%m')[:diff]
           break
         end
@@ -97,28 +120,25 @@ class StatusApp < Sinatra::Base
 
   get '/rss' do
     @page_title = config["title"]
-    status = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
-    messages = DB.execute("SELECT * FROM messages ORDER BY timestamp DESC LIMIT 10")
-
-    @data = messages.concat(status)
-    @data.sort_by! { |k| k["timestamp"] }.reverse!
+    @data = getdata(false, false)
+    @data.reverse!
 
     builder :rss
   end
 
   get '/json' do
-    @status = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
-    @messages = DB.execute("SELECT * FROM messages ORDER BY timestamp DESC LIMIT 10")
+    status = getstatus()
+    messages = getmessages(status)
 
     content_type 'application/json'
-    { :status => @status, :messages => @messages }.to_json
+    { :status => status, :messages => messages }.to_json
   end
 
   get '/spaceapi.json' do
     headers['Cache-Control']  = "no-cache"
     headers['Access-Control-Allow-Origin'] = "*"
 
-    @data = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 10")
+    @data = getstatus()
     @open = false
     @lastchange = nil
 
