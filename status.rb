@@ -71,7 +71,7 @@ class StatusApp < Sinatra::Base
         d["door_open"] = state
       end
     end
-    
+
     @data.reverse!
 
     statusS = Array.new status
