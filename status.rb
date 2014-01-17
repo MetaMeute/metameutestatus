@@ -28,7 +28,7 @@ class StatusApp < Sinatra::Base
     end
     def getmessages(status)
       # und nur Messages, die zu den gefundenen Status passen
-      messages = DB.execute("SELECT * FROM messages WHERE timestamp > ? ORDER BY timestamp LIMIT 20", status[-1]["timestamp"])
+      messages = DB.execute("SELECT * FROM messages WHERE timestamp > ? ORDER BY timestamp LIMIT 200", status[-1]["timestamp"])
       return messages
     end
     def getdata(status, messages)
