@@ -18,9 +18,9 @@ class StatusApp < Sinatra::Base
       Rack::Utils.escape_html(text)
     end
     def getstatus
-      # All status changes from the last 4 weeks
-      since = Time.now.getutc - 60*60*24*7*4
-      status = DB.execute("SELECT * FROM status WHERE timestamp > ? ORDER BY timestamp DESC LIMIT 50", since.to_s)
+      # All status changes from the two weeks
+      since = Time.now.getutc - 60*60*24*14
+      status = DB.execute("SELECT * FROM status WHERE timestamp > ? ORDER BY timestamp DESC LIMIT 50", '' + since.to_s)
       if status.length == 0
           status = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 2")
       end
