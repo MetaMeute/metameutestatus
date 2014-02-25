@@ -1,4 +1,4 @@
-api: 0.12
+api: "0.12"
 space: MetaMeute
 url: https://metameute.de
 icon:
@@ -6,7 +6,7 @@ icon:
   closed: https://status.metameute.de/images/closed.png
 address: Unversität zu Lübeck, Gebäude 62, Ratzeburger Allee 160, 23562 Lübeck, Germany
 contact:
-  phone: +494515005011
+  phone: "+494515005011"
   ml: MetaMeute@asta.uni-luebeck.de
   irc: irc://irc.oftc.net/#Metameute
 logo: https://status.metameute.de/images/logo.png
