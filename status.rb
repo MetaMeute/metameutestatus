@@ -18,16 +18,16 @@ class StatusApp < Sinatra::Base
       Rack::Utils.escape_html(text)
     end
     def getstatus
-      # Alle status der letzten Woche
-      since = Time.now.getutc - 60*60*24*7
-      status = DB.execute("SELECT * FROM status WHERE timestamp > ? ORDER BY timestamp DESC LIMIT 20", since.to_s)
+      # All status changes from the last 4 weeks
+      since = Time.now.getutc - 60*60*24*7*4
+      status = DB.execute("SELECT * FROM status WHERE timestamp > ? ORDER BY timestamp DESC LIMIT 50", since.to_s)
       if status.length == 0
           status = DB.execute("SELECT * FROM status ORDER BY timestamp DESC LIMIT 2")
       end
       return status
     end
     def getmessages(status)
-      # und nur Messages, die zu den gefundenen Status passen
+      # and the matching messages
       messages = DB.execute("SELECT * FROM messages WHERE timestamp > ? ORDER BY timestamp LIMIT 200", status[-1]["timestamp"])
       return messages
     end
