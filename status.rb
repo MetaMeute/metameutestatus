@@ -103,7 +103,11 @@ class StatusApp < Sinatra::Base
     end
     message.strip!
 
-    DB.execute("INSERT INTO messages (id, timestamp, message) VALUES (NULL,datetime('now'), ?)", message)
+    # "Spamschutz"
+    if message.length < 136 then
+      DB.execute("INSERT INTO messages (id, timestamp, message) VALUES (NULL,datetime('now'), ?)", message)
+    end
+
     redirect url('/')
   end
 
