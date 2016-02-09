@@ -104,7 +104,7 @@ class StatusApp < Sinatra::Base
     message.strip!
 
     # "Spamschutz"
-    if message.length < 136  and line1 !~ /.*([a-z0-9]+\.([a-z][a-z]|[a-z][a-z][a-z])($| .*))/i then
+    if message.length < 136  and message !~ /.*([a-z0-9]+\.([a-z][a-z]|[a-z][a-z][a-z])($| .*))/i then
       DB.execute("INSERT INTO messages (id, timestamp, message) VALUES (NULL,datetime('now'), ?)", message)
     end
 
